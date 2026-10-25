@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+  </defs>
+  <rect width="980" height="560" fill="#ffffff"/>
+  <text x="20" y="28" font-size="16" font-weight="bold">ui-next: Present the Right Interface (kept) vs forked second Adapter (degenerate)</text>
+  <text x="20" y="48" fill="#555">Source: ui-next-gateway.puml. Line numbers verified at meridian-evolution e95dc51.</text>
+
+  <!-- kept path -->
+  <rect x="20" y="80" width="230" height="56" fill="#eaf4ea" stroke="#2e7d32"/>
+  <text x="30" y="102">Screens (Stations, Forecast,</text><text x="30" y="120">Health, Anomalies)</text>
+  <rect x="300" y="80" width="250" height="56" fill="#eaf4ea" stroke="#2e7d32"/>
+  <text x="310" y="102">hooks: useAsync, useForecast,</text><text x="310" y="120">useSeries, useStations, useHealth</text>
+  <rect x="600" y="80" width="230" height="56" fill="#eaf4ea" stroke="#2e7d32"/>
+  <text x="610" y="102">endpoints.ts :17-43</text><text x="610" y="120">one function per endpoint</text>
+  <rect x="600" y="190" width="230" height="64" fill="#eaf4ea" stroke="#2e7d32" stroke-width="2"/>
+  <text x="610" y="212" font-weight="bold">client.ts :73-111  (KEEP)</text><text x="610" y="230">getJson + ApiError :40-49</text><text x="610" y="246">apiBase :27-33</text>
+  <rect x="600" y="320" width="230" height="56" fill="#f3f3f3" stroke="#555"/>
+  <text x="610" y="342">Java service :8081</text><text x="610" y="360">/api/health stations forecast series</text>
+  <line x1="250" y1="108" x2="300" y2="108" stroke="#333" marker-end="url(#a)"/>
+  <line x1="550" y1="108" x2="600" y2="108" stroke="#333" marker-end="url(#a)"/>
+  <line x1="715" y1="136" x2="715" y2="190" stroke="#333" marker-end="url(#a)"/>
+  <line x1="715" y1="254" x2="715" y2="320" stroke="#333" marker-end="url(#a)"/>
+
+  <!-- ErrorBanner -->
+  <rect x="300" y="200" width="250" height="44" fill="#eaf4ea" stroke="#2e7d32"/>
+  <text x="310" y="219">ErrorBanner.tsx:16</text><text x="310" y="235">instanceof ApiError</text>
+  <line x1="550" y1="222" x2="600" y2="222" stroke="#333" stroke-dasharray="4 3" marker-end="url(#a)"/>
+
+  <!-- degenerate path -->
+  <rect x="20" y="300" width="230" height="56" fill="#fdecea" stroke="#c0392b"/>
+  <text x="30" y="322" font-weight="bold">CompareScreen.tsx</text><text x="30" y="340">:36-41 imports forecastClient</text>
+  <rect x="300" y="400" width="300" height="104" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+  <text x="310" y="422" font-weight="bold">forecastClient.ts (2026)  (REMOVE)</text>
+  <text x="310" y="442">own getJson :72-94 (copy of client.ts)</text>
+  <text x="310" y="460">ForecastClientError :61-70 (not an ApiError)</text>
+  <text x="310" y="478">currentForecastRun :114  (max year, run_at)</text>
+  <text x="310" y="496">formatYield :169 (2 dp)</text>
+  <line x1="135" y1="356" x2="300" y2="440" stroke="#c0392b" marker-end="url(#r)"/>
+  <line x1="600" y1="452" x2="760" y2="376" stroke="#c0392b" marker-end="url(#r)"/>
+  <text x="640" y="440" fill="#c0392b">bypasses client.ts</text>
+  <path d="M 450 400 C 450 330, 430 270, 425 244" fill="none" stroke="#c0392b" stroke-dasharray="4 3" marker-end="url(#r)"/>
+  <text x="455" y="330" fill="#c0392b">not an ApiError;</text><text x="455" y="346" fill="#c0392b">errors swallowed</text>
+  <text x="455" y="362" fill="#c0392b">CompareScreen.tsx:75-79</text>
+
+  <!-- dead helper -->
+  <rect x="680" y="440" width="270" height="64" fill="#f3f3f3" stroke="#999" stroke-dasharray="5 3"/>
+  <text x="690" y="462">util/format.ts:39  yieldTonnes (3 dp)</text><text x="690" y="480">no caller except its own test</text><text x="690" y="496" fill="#c0392b">re-invented by formatYield</text>
+  <line x1="600" y1="496" x2="680" y2="480" stroke="#999" stroke-dasharray="4 3" marker-end="url(#a)"/>
+
+  <!-- legend -->
+  <text x="20" y="440" font-weight="bold">"Current run" is defined 3 ways in ui-next:</text>
+  <text x="20" y="460">useForecast.ts:21   max year</text>
+  <text x="20" y="478">forecastClient.ts:114   max year, then run_at</text>
+  <text x="20" y="496">CompareScreen.tsx:133   max over the above</text>
+  <text x="20" y="518">Legacy console: last row returned (compare.js:141, forecast.js:114)</text>
+</svg>

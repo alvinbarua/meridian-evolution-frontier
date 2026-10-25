@@ -1,0 +1,30 @@
+@startuml ui-next-gateway
+title ui-next: Present the Right Interface (kept) vs forked second Adapter (degenerate)
+skinparam componentStyle rectangle
+component "Screens\n(Stations, Forecast, Health, Anomalies)" as S
+component "Compare screen\nCompareScreen.tsx:36-41" as C
+component "hooks: useAsync / useForecast /\nuseSeries / useStations / useHealth" as H
+component "endpoints.ts :17-43\n(one fn per endpoint)" as E
+component "client.ts :73-111\ngetJson + ApiError :40-49" as G
+component "forecastClient.ts (2026)\nown getJson :72-94\nForecastClientError :61-70" as F #FFD6D6
+component "util/format.ts:39\nyieldTonnes (3 dp)\nNO caller" as Y #EEEEEE
+component "ErrorBanner.tsx:16\ninstanceof ApiError" as B
+database "Java service :8081\n/api/health stations forecast series" as J
+S --> H
+H --> E
+E --> G
+G --> J
+C --> F #red
+F --> J #red : bypasses client.ts
+C ..> H : useStations, useSeries
+B ..> G : expects ApiError
+F ..> B #red : ForecastClientError is NOT ApiError;\nCompareScreen.tsx:75-79 swallows errors
+F ..> Y #gray : re-invents formatYield (2 dp)\nforecastClient.ts:169
+note right of F
+  "current run" defined 3 ways:
+  useForecast.ts:21  (max year)
+  forecastClient.ts:114 (max year, run_at)
+  CompareScreen.tsx:133 (max over above)
+  legacy: last row returned
+end note
+@enduml
