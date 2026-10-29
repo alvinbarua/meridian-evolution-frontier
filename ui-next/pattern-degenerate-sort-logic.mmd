@@ -1,0 +1,13 @@
+flowchart TD
+    SS["StationsScreen.tsx<br/>lines 15, 32"]
+    AS["AnomaliesScreen.tsx<br/>line 22"]
+    CS["CompareScreen.tsx<br/>line 27"]
+    USV["useStationView<br/>useStations.ts:16–57<br/>(sort + filter state + comparator)"]
+    DT["DataTable.tsx:57–94<br/>(sort state + comparator)"]
+    SS -->|"uses bespoke hook"| USV
+    AS -->|"uses generic component"| DT
+    CS -->|"uses generic component"| DT
+    USV -. "same sort comparator,<br/>never retired" .-> DT
+    style USV fill:#f8d7da,color:#000
+    style DT fill:#d4edda,color:#000
+
