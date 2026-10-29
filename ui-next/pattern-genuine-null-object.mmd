@@ -1,0 +1,10 @@
+flowchart TD
+    Router["App.tsx<br/>Routes all 11 screens"] --> Live["Live screens<br/>StationsScreen / ForecastScreen / HealthScreen / AnomaliesScreen / CompareScreen"]
+    Router --> Stubs["Stub screens<br/>AuditLogScreen / DataQualityScreen / IngestMonitorScreen / ModelRunsScreen"]
+    Stubs -->|"return &lt;StubScreen path=…/&gt;"| StubComponent["StubScreen.tsx<br/>lines 21–57"]
+    StubComponent -->|"ROADMAP.find(r => r.path === path)"| Roadmap["roadmap.ts<br/>ROADMAP array · lines 28–78"]
+    Roadmap -->|"NAV_ITEMS derived"| Nav["nav.ts · lines 34–39"]
+    style Live fill:#d4edda,color:#000
+    style Stubs fill:#fff3cd,color:#000
+    style StubComponent fill:#cce5ff,color:#000
+
